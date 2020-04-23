@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="module_sx" default="compile.module.sx">
+  <dirname property="module.sx.basedir" file="${ant.file.module_sx}"/>
+  
+  <property name="module.jdk.home.sx" value="${project.jdk.home}"/>
+  <property name="module.jdk.bin.sx" value="${project.jdk.bin}"/>
+  <property name="module.jdk.classpath.sx" value="${project.jdk.classpath}"/>
+  
+  <property name="compiler.args.sx" value="-encoding UTF-8 -source 8 ${compiler.args}"/>
+  
+  <property name="sx.output.dir" value="${module.sx.basedir}/../../../../../../../../Users/w/Documents/idea/S0/out/production/SX"/>
+  <property name="sx.testoutput.dir" value="${module.sx.basedir}/../../../../../../../../Users/w/Documents/idea/S0/out/test/SX"/>
+  
+  <path id="sx.module.bootclasspath">
+    <!-- Paths to be included in compilation bootclasspath -->
+  </path>
+  
+  <path id="sx.module.production.classpath">
+    <path refid="library.scala-sdk-2.10.2.classpath"/>
+    <path refid="${module.jdk.classpath.sx}"/>
+    <path refid="library.uncommons-maths-1.2.2.classpath"/>
+    <path refid="library.joda-2.1.classpath"/>
+    <path refid="library.postgresql-9.1.classpath"/>
+    <path refid="library.jfreechart-1.0.14.classpath"/>
+    <path refid="library.junit-4.11.classpath"/>
+  </path>
+  
+  <path id="sx.runtime.production.module.classpath">
+    <pathelement location="${sx.output.dir}"/>
+    <path refid="library.scala-sdk-2.10.2.classpath"/>
+    <path refid="library.uncommons-maths-1.2.2.classpath"/>
+    <path refid="library.joda-2.1.classpath"/>
+    <path refid="library.postgresql-9.1.classpath"/>
+    <path refid="library.jfreechart-1.0.14.classpath"/>
+    <path refid="library.junit-4.11.classpath"/>
+  </path>
+  
+  <path id="sx.module.classpath">
+    <pathelement location="${sx.output.dir}"/>
+    <path refid="library.scala-sdk-2.10.2.classpath"/>
+    <path refid="${module.jdk.classpath.sx}"/>
+    <path refid="library.uncommons-maths-1.2.2.classpath"/>
+    <path refid="library.joda-2.1.classpath"/>
+    <path refid="library.postgresql-9.1.classpath"/>
+    <path refid="library.jfreechart-1.0.14.classpath"/>
+    <path refid="library.junit-4.11.classpath"/>
+  </path>
+  
+  <path id="sx.runtime.module.classpath">
+    <pathelement location="${sx.testoutput.dir}"/>
+    <pathelement location="${sx.output.dir}"/>
+    <path refid="library.scala-sdk-2.10.2.classpath"/>
+    <path refid="library.uncommons-maths-1.2.2.classpath"/>
+    <path refid="library.joda-2.1.classpath"/>
+    <path refid="library.postgresql-9.1.classpath"/>
+    <path refid="library.jfreechart-1.0.14.classpath"/>
+    <path refid="library.junit-4.11.classpath"/>
+  </path>
+  
+  
+  <patternset id="excluded.from.module.sx">
+    <patternset refid="ignored.files"/>
+  </patternset>
+  
+  <patternset id="excluded.from.compilation.sx">
+    <patternset refid="excluded.from.module.sx"/>
+  </patternset>
+  
+  <path id="sx.module.sourcepath">
+    <dirset dir="${module.sx.basedir}/../../../../../../../../Users/w/Documents/idea/S0/SX">
+      <include name="src"/>
+    </dirset>
+  </path>
+  
+  <path id="sx.module.test.sourcepath">
+    <dirset dir="${module.sx.basedir}/../../../../../../../../Users/w/Documents/idea/S0/SX">
+      <include name="test"/>
+    </dirset>
+  </path>
+  
+  
+  <target name="compile.module.sx" depends="compile.module.sx.production,compile.module.sx.tests" description="Compile module SX"/>
+  
+  <target name="compile.module.sx.production" description="Compile module SX; production classes">
+    <mkdir dir="${sx.output.dir}"/>
+    <javac destdir="${sx.output.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true" executable="${module.jdk.bin.sx}/javac">
+      <compilerarg line="${compiler.args.sx}"/>
+      <bootclasspath refid="sx.module.bootclasspath"/>
+      <classpath refid="sx.module.production.classpath"/>
+      <src refid="sx.module.sourcepath"/>
+      <patternset refid="excluded.from.compilation.sx"/>
+    </javac>
+    
+    <copy todir="${sx.output.dir}">
+      <fileset dir="${module.sx.basedir}/../../../../../../../../Users/w/Documents/idea/S0/SX/src">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+      </fileset>
+    </copy>
+  </target>
+  
+  <target name="compile.module.sx.tests" depends="compile.module.sx.production" description="compile module SX; test classes" unless="skip.tests">
+    <mkdir dir="${sx.testoutput.dir}"/>
+    <javac destdir="${sx.testoutput.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true" executable="${module.jdk.bin.sx}/javac">
+      <compilerarg line="${compiler.args.sx}"/>
+      <bootclasspath refid="sx.module.bootclasspath"/>
+      <classpath refid="sx.module.classpath"/>
+      <src refid="sx.module.test.sourcepath"/>
+      <patternset refid="excluded.from.compilation.sx"/>
+    </javac>
+    
+    <copy todir="${sx.testoutput.dir}">
+      <fileset dir="${module.sx.basedir}/../../../../../../../../Users/w/Documents/idea/S0/SX/test">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+      </fileset>
+    </copy>
+  </target>
+  
+  <target name="clean.module.sx" description="cleanup module">
+    <delete dir="${sx.output.dir}"/>
+    <delete dir="${sx.testoutput.dir}"/>
+  </target>
+</project>
